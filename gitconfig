@@ -1,0 +1,13 @@
+[user]
+	email = $GIT_EMAIL
+	name = Christophe Aguettaz
+[merge]
+	tool = p4mergetool
+[mergetool "p4mergetool"]
+	cmd = p4merge $PWD/$BASE $PWD/$REMOTE $PWD/$LOCAL $PWD/$MERGED
+[mergetool]
+	keepBackup = false
+[diff]
+	tool = p4mergetool
+[difftool "p4mergetool"]
+	cmd = p4merge $LOCAL $REMOTE
