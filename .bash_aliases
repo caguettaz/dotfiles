@@ -56,4 +56,30 @@ function do_parent_nconfig {
     make -C "$curdir" nconfig
 }
 
+function __rwhich {
+    if [[ ! -e "$1" ]]; then
+        return
+    fi
+
+    dn="$(dirname "$1")"
+    cd "$dn"
+
+    printf "%s" "$1"
+   
+    if [[ -L "$1" ]]; then
+        printf " -> "
+    fi
+
+    printf "\n"
+
+    local newpath="$(readlink "$1")"
+    if [[ $? == 0 ]]; then
+        __rwhich "$newpath"
+    fi
+}
+
+function rwhich {
+    (__rwhich "$(which "$1")")
+}
+
 alias nconfig="do_parent_nconfig"
