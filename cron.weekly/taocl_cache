@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Dependencies: curl, pandoc, xmlstarlet
+
+TAOCL_CACHE=/var/cache/misc/taocl
+mkdir -p $(dirname "$TAOCL_CACHE")
+curl -s https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md > "$TAOCL_CACHE"

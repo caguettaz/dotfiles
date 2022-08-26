@@ -1,0 +1,20 @@
+{
+	"auto_match_enabled": false,
+	"bold_folder_labels": true,
+	"color_scheme": "Packages/Theme - Piatto/Piatto Light.tmTheme",
+	"ensure_newline_at_eof_on_save": true,
+	"fade_fold_buttons": false,
+	"font_size": 9,
+	"highlight_line": true,
+	"ignored_packages":
+	[
+		"Vintage",
+	],
+	"rulers":
+	[
+		100
+	],
+	"tab_completion": false,
+	"theme": "Numix Light.sublime-theme",
+	"use_tab_stops": true,
+}
