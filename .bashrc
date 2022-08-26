@@ -94,6 +94,12 @@ export JAUNY_CACHE="$HOME/.jauny_cache"
 #gitg is too broken for simply greping out stuff, suppress everything
 gitg() { $(which gitg) "$@" 2>/dev/null; }
 
+BASHRC_LOCAL="$HOME/.bashrc_local"
+
+if [[ -e "$BASHRC_LOCAL" ]]; then
+    . "$BASHRC_LOCAL"
+fi
+
 TAOCL_CACHE=/var/cache/misc/taocl
 function taocl() {
     #Check that there is a cached version updated by cron - otherwise, bail silently.
