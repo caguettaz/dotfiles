@@ -83,3 +83,9 @@ function rwhich {
 }
 
 alias nconfig="do_parent_nconfig"
+
+BASH_ALIASES_LOCAL="$HOME/.bash_aliases_local"
+
+if [[ -e "$BASH_ALIASES_LOCAL" ]]; then
+    . "$BASH_ALIASES_LOCAL"
+fi
