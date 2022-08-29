@@ -18,7 +18,7 @@ PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 [[ -s $HOME/.rvm/scripts/rvm ]] && source $HOME/.rvm/scripts/rvm
 
 # Add rvm gems and nginx to the path
-export PATH=$PATH:~/.gem/ruby/1.8/bin:/opt/nginx/sbin
+#export PATH=$PATH:~/.gem/ruby/1.8/bin:/opt/nginx/sbin
 
 # Path to the bash it configuration
 export BASH_IT=$HOME/.bash_it
@@ -28,10 +28,10 @@ export BASH_IT=$HOME/.bash_it
 export BASH_IT_THEME='bobby'
 
 # Your place for hosting Git repos. I use this for private repos.
-export GIT_HOSTING='git@git.domain.com'
+#export GIT_HOSTING='git@git.domain.com'
 
 # Set the path nginx
-export NGINX_PATH='/opt/nginx'
+#export NGINX_PATH='/opt/nginx'
 
 # Don't check mail when opening terminal.
 unset MAILCHECK
