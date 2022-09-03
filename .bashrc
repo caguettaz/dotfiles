@@ -65,6 +65,7 @@ export EDITOR=/etc/alternatives/editor
 export VISUAL="$EDITOR"
 
 export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.cargo/bin"
 source $HOME/.bash_aliases
 
 function swap()         
