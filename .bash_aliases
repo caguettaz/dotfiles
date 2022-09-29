@@ -84,6 +84,17 @@ function rwhich {
 
 alias nconfig="do_parent_nconfig"
 
+function __locate_name {
+    if [[ -z $1 ]]; then
+        return
+    fi
+
+    >&2 printf "trying to locate %s (case-insensitive)\n" "$1"
+    locate -bri "^$1\$"
+}
+
+alias locn=__locate_name
+
 BASH_ALIASES_LOCAL="$HOME/.bash_aliases_local"
 
 if [[ -e "$BASH_ALIASES_LOCAL" ]]; then
