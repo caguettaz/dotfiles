@@ -2,6 +2,17 @@
 
 [[ $- != *"i"* ]] && return 0
 
+if [[ -v THE_KRAKEN_SENDS_ITS_REGARDS ]]; then
+	unset THE_KRAKEN_SENDS_ITS_REGARDS
+
+	# Only intercept terminals that aren't direct children
+	parent_comm="$(ps -o comm= $PPID)"
+	if [[ gitkraken != $parent_comm ]]; then
+		nohup >/dev/null code $PWD
+		exit 0
+	fi
+fi
+
 # Eternal bash history. Taken from http://stackoverflow.com/questions/9457233/unlimited-bash-history
 # ---------------------
 export HISTFILESIZE=-1
@@ -65,7 +76,6 @@ export EDITOR=/etc/alternatives/editor
 export VISUAL="$EDITOR"
 
 export PATH="$PATH:$HOME/bin:$HOME/.local/bin"
-export PATH="$PATH:$HOME/.cargo/bin"
 source $HOME/.bash_aliases
 
 function swap()         
@@ -101,7 +111,7 @@ if [[ -e "$BASHRC_LOCAL" ]]; then
     . "$BASHRC_LOCAL"
 fi
 
-TAOCL_CACHE=/var/cache/misc/taocl
+TAOCL_CACHE="$HOME"/tmp/cache/taocl
 function taocl() {
     #Check that there is a cached version updated by cron - otherwise, bail silently.
     [ -f "$TAOCL_CACHE" ] || return
@@ -116,3 +126,4 @@ function taocl() {
 }
 
 taocl
+
