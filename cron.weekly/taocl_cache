@@ -1,7 +1,22 @@
 #!/bin/bash
 
-#Dependencies: curl, pandoc, xmlstarlet
+# Dependency: curl. Tip display also requires pandoc and xmlstarlet.
+set -euo pipefail
 
-TAOCL_CACHE=/var/cache/misc/taocl
-mkdir -p $(dirname "$TAOCL_CACHE")
-curl -s https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md > "$TAOCL_CACHE"
+TAOCL_CACHE="${TAOCL_CACHE:-/var/cache/misc/taocl}"
+mkdir -p -- "$(dirname -- "$TAOCL_CACHE")"
+cache_tmp=$(mktemp "${TAOCL_CACHE}.XXXXXX")
+trap 'rm -f -- "$cache_tmp"' EXIT
+trap 'exit 1' HUP INT TERM
+
+# Keep the last good cache until a complete download is ready.
+curl --fail --silent --show-error --location \
+    --connect-timeout 10 --max-time 60 --retry 3 --retry-delay 5 \
+    --output "$cache_tmp" \
+    https://raw.githubusercontent.com/jlevy/the-art-of-command-line/master/README.md
+if [[ ! -s "$cache_tmp" ]]; then
+    printf 'taocl_cache: downloaded an empty document\n' >&2
+    exit 1
+fi
+chmod 644 "$cache_tmp"
+mv -f -- "$cache_tmp" "$TAOCL_CACHE"

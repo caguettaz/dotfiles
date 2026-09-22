@@ -111,19 +111,29 @@ if [[ -e "$BASHRC_LOCAL" ]]; then
     . "$BASHRC_LOCAL"
 fi
 
-TAOCL_CACHE="$HOME"/tmp/cache/taocl
+TAOCL_CACHE="${TAOCL_CACHE:-/var/cache/misc/taocl}"
 function taocl() {
-    #Check that there is a cached version updated by cron - otherwise, bail silently.
-    [ -f "$TAOCL_CACHE" ] || return
+    # No tip until the cron job has populated the cache.
+    [ -s "$TAOCL_CACHE" ] || return 0
+    local tip
+    if ! tip=$(
+        set -o pipefail
+        sed '/cowsay[.]png/d' "$TAOCL_CACHE" |
+        pandoc -f markdown -t html |
+        xmlstarlet fo --html --dropdtd /dev/stdin |
+        xmlstarlet sel -t -v "(html/body/ul/li[count(p)>0])[$RANDOM mod last()+1]" |
+        xmlstarlet unesc | fmt -80 | iconv -t US -c
+    ); then
+        printf 'taocl: failed to render a tip from %s\n' "$TAOCL_CACHE" >&2
+        return 1
+    fi
+    if [[ -z "$tip" ]]; then
+        printf 'taocl: no tips found in %s\n' "$TAOCL_CACHE" >&2
+        return 1
+    fi
     printf '\n***Tip from '"'"'The art of command line'"'"'***\n'
-    cat "$TAOCL_CACHE" |
-    sed '/cowsay[.]png/d' |
-    pandoc -f markdown -t html |
-    xmlstarlet fo --html --dropdtd |
-    xmlstarlet sel -t -v "(html/body/ul/li[count(p)>0])[$RANDOM mod last()+1]" |
-    xmlstarlet unesc | fmt -80 | iconv -t US -c
+    printf '%s\n' "$tip"
     printf '******\n'
 }
 
 taocl
-
